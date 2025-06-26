@@ -1,0 +1,31 @@
+<!-- templates/historial.html -->
+{% extends 'base.html' %}
+{% block title %}Historial de Cambios{% endblock %}
+{% block content %}
+<h2>Historial de Cambios</h2>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Usuario</th>
+      <th>Acción</th>
+      <th>ID Trabajo</th>
+      <th>Cliente</th>
+      <th>Descripción</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for fecha, usuario, accion, trabajo_id, cliente, descripcion in historial %}
+    <tr>
+      <td>{{ fecha }}</td>
+      <td>{{ usuario }}</td>
+      <td>{{ accion }}</td>
+      <td>{{ trabajo_id }}</td>
+      <td>{{ cliente }}</td>
+      <td>{{ descripcion }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{{ url_for('dashboard') }}" class="btn btn-secondary mt-3">Volver al inicio</a>
+{% endblock %}

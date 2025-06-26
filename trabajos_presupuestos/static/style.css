@@ -1,0 +1,17 @@
+body {
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+}
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+}
+.table th, .table td {
+  vertical-align: middle !important;
+}
+.btn-primary, .btn-success, .btn-warning, .btn-danger {
+  border-radius: 20px;
+}
+h1, h2, h3, h4 {
+  color: #1d3557;
+}

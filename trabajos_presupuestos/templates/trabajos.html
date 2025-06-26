@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Trabajos{% endblock %}
+{% block content %}
+  <h2>Trabajos</h2>
+  <form class="mb-3" method="get" action="{{ url_for('buscar_trabajos') }}">
+    <input type="text" name="q" placeholder="Buscar por cliente o descripción" value="{{ q or '' }}">
+    <button class="btn btn-primary btn-sm">Buscar</button>
+    <a href="{{ url_for('trabajos') }}" class="btn btn-secondary btn-sm">Limpiar</a>
+  </form>
+  <a href="{{ url_for('nuevo_trabajo') }}" class="btn btn-success mb-3">Nuevo trabajo</a>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Descripción</th>
+        <th>Fecha inicio</th>
+        <th>Fecha fin</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in trabajos %}
+      <tr>
+        <td>{{ t[0] }}</td>
+        <td>{{ t[1] }}</td>
+        <td>{{ t[2] }}</td>
+        <td>{{ t[3] }}</td>
+        <td>{{ t[4] }}</td>
+        <td>{{ t[5] }}</td>
+<td>
+  <a href="{{ url_for('ver_trabajo', id=t[0]) }}" class="btn btn-info btn-sm">Ver</a>
+  <a href="{{ url_for('editar_trabajo', id=t[0]) }}" class="btn btn-warning btn-sm">Editar</a>
+  {% if current_user.rol == 'admin' %}
+<form action="{{ url_for('eliminar_trabajo', id=t[0]) }}" method="post" style="display:inline;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <button class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar trabajo?')">Eliminar</button>
+</form>
+{% endif %}
+  <!-- Formulario para cambiar estado -->
+  <form action="{{ url_for('cambiar_estado', id=t[0]) }}" method="post" style="display:inline;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <select name="estado" onchange="this.form.submit()" class="form-select form-select-sm d-inline w-auto">
+      <option {% if t[5]=='Pendiente' %}selected{% endif %}>Pendiente</option>
+      <option {% if t[5]=='En curso' %}selected{% endif %}>En curso</option>
+      <option {% if t[5]=='Terminado' %}selected{% endif %}>Terminado</option>
+    </select>
+  </form>
+</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

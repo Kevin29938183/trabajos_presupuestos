@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+  <a href="{{ url_for('trabajos') }}" class="btn btn-secondary mb-3">Volver al listado</a>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title mb-4">Nuevo Trabajo</h2>
+      <form method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="mb-3">
+          <label class="form-label">Cliente</label>
+          <input name="cliente" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Descripción</label>
+          <textarea name="descripcion" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Fecha de inicio</label>
+          <input type="date" name="fecha_inicio" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Fecha de fin</label>
+          <input type="date" name="fecha_fin" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Estado</label>
+          <select name="estado" class="form-select">
+            <option>Pendiente</option>
+            <option>En curso</option>
+            <option>Terminado</option>
+          </select>
+        </div>
+        <button class="btn btn-primary">
+          <i class="bi bi-plus-circle"></i> Guardar
+        </button>
+      </form>
+    </div>
+  </div>
+  <a href="{{ url_for('trabajos') }}" class="btn btn-secondary mt-3">Volver al listado</a>
+{% endblock %}

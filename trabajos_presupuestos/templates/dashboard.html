@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card text-bg-primary mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Trabajos</h5>
+          <p class="card-text display-4">{{ total_trabajos or 0 }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="{{ url_for('trabajos') }}" class="btn btn-primary">Ver trabajos</a>
+  <a href="{{ url_for('nuevo_trabajo') }}" class="btn btn-success">Nuevo trabajo</a>
+{% endblock %}

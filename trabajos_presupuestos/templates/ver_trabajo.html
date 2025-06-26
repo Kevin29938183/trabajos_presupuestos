@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Detalle del Trabajo</h2>
+  <ul>
+    <li><b>Cliente:</b> {{ trabajo[1] }}</li>
+    <li><b>Descripción:</b> {{ trabajo[2] }}</li>
+    <li><b>Fecha inicio:</b> {{ trabajo[3] }}</li>
+    <li><b>Fecha fin:</b> {{ trabajo[4] }}</li>
+    <li><b>Estado:</b> {{ trabajo[5] }}</li>
+  </ul>
+  <h3>Presupuesto</h3>
+  <form method="post" action="{{ url_for('agregar_presupuesto', id=trabajo[0]) }}" class="row g-2 mb-3">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="col">
+      <input name="item" class="form-control" placeholder="Ítem" required>
+    </div>
+    <div class="col">
+      <input name="cantidad" type="number" class="form-control" placeholder="Cantidad" required>
+    </div>
+    <div class="col">
+      <input name="precio_unitario" type="number" step="0.01" class="form-control" placeholder="Precio unitario" required>
+    </div>
+    <div class="col">
+      <button class="btn btn-success">Agregar</button>
+    </div>
+  </form>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Ítem</th>
+        <th>Cantidad</th>
+        <th>Precio unitario</th>
+        <th>Total</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in presupuestos %}
+      <tr>
+        <td>{{ p[2] }}</td>
+        <td>{{ p[3] }}</td>
+        <td>${{ '%.2f'|format(p[4]) }}</td>
+        <td>${{ '%.2f'|format((p[3] or 0)*(p[4] or 0)) }}</td>
+        <td>
+          <form action="{{ url_for('eliminar_presupuesto', id=p[0]) }}" method="post" style="display:inline;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar ítem?')">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <h4>Total presupuesto: ${{ '%.2f'|format(total) }}</h4>
+  <a href="{{ url_for('exportar_pdf', id=trabajo[0]) }}" class="btn btn-outline-secondary mb-3">Exportar PDF</a>
+  <a href="{{ url_for('trabajos') }}" class="btn btn-secondary">Volver</a>
+<h5>Archivos adjuntos</h5>
+<form method="post" action="{{ url_for('subir_archivo', id=trabajo[0]) }}" enctype="multipart/form-data">
+   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input type="file" name="archivo" required>
+  <button class="btn btn-secondary btn-sm">Subir archivo</button>
+</form>
+<ul>
+  {% for nombre, ruta, fecha in archivos %}
+    <li><a href="{{ url_for('static', filename='../uploads/' ~ nombre) }}" target="_blank">{{ nombre }}</a> ({{ fecha }})</li>
+  {% else %}
+    <li>Sin archivos.</li>
+  {% endfor %}
+</ul>
+<h6>Comentarios</h6>
+<form method="post" action="{{ url_for('agregar_comentario', id=trabajo[0]) }}">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <textarea name="comentario" class="form-control mb-2" required></textarea>
+  <button class="btn btn-secondary btn-sm">Agregar comentario</button>
+</form>
+<ul>
+  {% for usuario, comentario, fecha in comentarios %}
+    <li><b>{{ usuario }}</b> ({{ fecha }}): {{ comentario }}</li>
+  {% else %}
+    <li>Sin comentarios.</li>
+  {% endfor %}
+</ul>
+<a href="{{ url_for('trabajos') }}" class="btn btn-secondary mt-3">Volver al listado</a>
+  {% endblock %}

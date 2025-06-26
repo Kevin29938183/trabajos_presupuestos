@@ -1,0 +1,8 @@
+flask
+flask-login
+flask-wtf
+werkzeug
+pdfkit
+pandas
+openpyxl
+gunicorn
